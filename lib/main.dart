@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_grid_button/flutter_grid_button.dart';
 
-
 void main() {
   runApp(const MyApp());
 }
@@ -32,22 +31,26 @@ class Calculator extends StatefulWidget {
 
 class _Calculator extends State<Calculator> {
   String _current = ""; // current operations + numbers thus far
+  final buttonStyle = const TextStyle(
+    color: Colors.blueGrey,
+  );
 
-
-
-  Widget display() { // display the current total + current operations
+  Widget display() {
+    // display the current total + current operations
     return Row(
-      children: <Widget>[
-        Text(
-          textAlign: TextAlign.left,
-          calculate().toString(),
-        ),
-        Text(
-          textAlign: TextAlign.right,
-          _current,
-        )
-      ]
-    );
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Flexible(
+              child: Text(
+            textAlign: TextAlign.left,
+            calculate().toString(),
+          )),
+          Flexible(
+              child: Text(
+            textAlign: TextAlign.right,
+            _current,
+          ))
+        ]);
   }
 
   double calculate() {
@@ -63,7 +66,7 @@ class _Calculator extends State<Calculator> {
           total -= curNum;
         } else if (prevOp == 2) {
           total *= curNum;
-        } else if (prevOp == 3){
+        } else if (prevOp == 3) {
           if (curNum == 0) {
             if (kDebugMode) {
               print("AHHHHHHHHHHHHHHHHHHHHHHHHHHHHH divide by 0");
@@ -90,27 +93,49 @@ class _Calculator extends State<Calculator> {
     }
     return total;
   }
+
   bool _isNumeric(String str) {
-    if(str == null) {
+    if (str == null) {
       return false;
     }
     return double.tryParse(str) != null;
   }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        display(),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-          for (int i = 0; i < 4; i++)
-            Column(
-
-            )
+    return Column(children: <Widget>[
+      Flexible(child: display()),
+      Flexible(
+          child: GridButton(
+              items: const [
+            [
+              GridButtonItem(title: '7'),
+              GridButtonItem(title: '8'),
+              GridButtonItem(title: '9'),
+              GridButtonItem(title: '/'),
+            ],
+            [
+              GridButtonItem(title: '4'),
+              GridButtonItem(title: '5'),
+              GridButtonItem(title: '6'),
+              GridButtonItem(title: '*'),
+            ],
+            [
+              GridButtonItem(title: '1'),
+              GridButtonItem(title: '2'),
+              GridButtonItem(title: '3'),
+              GridButtonItem(title: '-'),
+            ],
+            [
+              GridButtonItem(title: '0', flex: 2),
+              GridButtonItem(title: '.'),
+              GridButtonItem(title: '+'),
+            ],
           ],
-        )
-      ]
-    );
+              onPressed: (dynamic val) {
+                _current += val;
+                setState(() {});
+              }))
+    ]);
   }
 }
