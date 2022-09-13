@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_grid_button/flutter_grid_button.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -29,22 +31,28 @@ class Calculator extends StatefulWidget {
 }
 
 class _Calculator extends State<Calculator> {
-  String _current = "";
+  String _current = ""; // current operations + numbers thus far
 
 
 
-  // Widget display() {
-  //   return Column(
-  //     Text(
-  //       textAlign: TextAlign.left,
-  //
-  //     ),
-  //   );
-  // }
+  Widget display() { // display the current total + current operations
+    return Row(
+      children: <Widget>[
+        Text(
+          textAlign: TextAlign.left,
+          calculate().toString(),
+        ),
+        Text(
+          textAlign: TextAlign.right,
+          _current,
+        )
+      ]
+    );
+  }
 
   double calculate() {
     double total = 0;
-    int start = 0;
+    int start = 0; // index
     int prevOp = 0; // 0 is +, -, *, /
     for (int i = 0; i < _current.length; i++) {
       if (!_isNumeric(_current[i])) {
@@ -55,7 +63,7 @@ class _Calculator extends State<Calculator> {
           total -= curNum;
         } else if (prevOp == 2) {
           total *= curNum;
-        } else {
+        } else if (prevOp == 3){
           if (curNum == 0) {
             if (kDebugMode) {
               print("AHHHHHHHHHHHHHHHHHHHHHHHHHHHHH divide by 0");
@@ -75,7 +83,7 @@ class _Calculator extends State<Calculator> {
           prevOp = 3;
         } else {
           if (kDebugMode) {
-            print("AHHHHHHHHHHHHHHHHHHHHHHHHHHHHH unchecked symbol");
+            print("AHHHHHHHHHHHHHHHHHHHHHHHHHHHHH unchecked character");
           }
         }
       }
@@ -92,9 +100,7 @@ class _Calculator extends State<Calculator> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Row(
-
-        ),
+        display(),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
