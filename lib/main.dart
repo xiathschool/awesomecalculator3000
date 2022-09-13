@@ -31,19 +31,22 @@ class Calculator extends StatefulWidget {
 
 class _Calculator extends State<Calculator> {
   String _current = ""; // current operations + numbers thus far
+  double total = 0;
+
   final buttonStyle = const TextStyle(
     color: Colors.blueGrey,
   );
 
   Widget display() {
     // display the current total + current operations
+    calculate();
     return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Flexible(
               child: Text(
             textAlign: TextAlign.left,
-            calculate().toString(),
+            total.toString(),
           )),
           Flexible(
               child: Text(
@@ -53,8 +56,8 @@ class _Calculator extends State<Calculator> {
         ]);
   }
 
-  double calculate() {
-    double total = 0;
+  void calculate() {
+    total = 0;
     int start = 0; // index
     int prevOp = 0; // 0 is +, -, *, /
     for (int i = 0; i < _current.length; i++) {
@@ -91,7 +94,6 @@ class _Calculator extends State<Calculator> {
         }
       }
     }
-    return total;
   }
 
   bool _isNumeric(String str) {
@@ -103,7 +105,9 @@ class _Calculator extends State<Calculator> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: <Widget>[
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
       Flexible(child: display()),
       Flexible(
           child: GridButton(
@@ -131,9 +135,16 @@ class _Calculator extends State<Calculator> {
               GridButtonItem(title: '.'),
               GridButtonItem(title: '+'),
             ],
+            [
+              GridButtonItem(title: '='),
+            ],
           ],
               onPressed: (dynamic val) {
-                _current += val;
+                if (val != '=') {
+                  _current += val;
+                } else {
+                  calculate();
+                }
                 setState(() {});
               }))
     ]);
