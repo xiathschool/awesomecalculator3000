@@ -64,7 +64,7 @@ class _Calculator extends State<Calculator> {
       if (parenth == -1) {
         break;
       }
-      int endParenth = cur.indexOf(')');
+      int endParenth = cur.lastIndexOf(')');
       if (endParenth == -1) {
         print("AHHHHHHHHHHHHHHHHH incorrect syntax: no ending parenthesis");
         return _currentVal;
