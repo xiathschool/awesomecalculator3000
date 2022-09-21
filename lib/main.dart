@@ -33,7 +33,7 @@ class Calculator extends StatefulWidget {
 
 class _Calculator extends State<Calculator> {
   String _current = ""; // current operations + numbers thus far
-
+  String _currentVal = '0';
   final buttonStyle = const TextStyle(
     color: Colors.blueGrey,
   );
@@ -59,13 +59,15 @@ class _Calculator extends State<Calculator> {
 
   // recursive function that calculates mathematical string operations
   String calculate(String cur) {
-    int parenth = cur.indexOf('(');
-    while (parenth != -1) {
+    while (true) {
       int parenth = cur.indexOf('(');
+      if (parenth == -1) {
+        break;
+      }
       int endParenth = cur.indexOf(')');
       if (endParenth == -1) {
         print("AHHHHHHHHHHHHHHHHH incorrect syntax: no ending parenthesis");
-        return '';
+        return _currentVal;
       }
       String value = calculate(cur.substring(parenth + 1, endParenth));
       cur = cur.substring(0, parenth) + value.toString() + cur.substring(endParenth + 1);
@@ -116,7 +118,7 @@ class _Calculator extends State<Calculator> {
         }
         cur = cur.substring(0, pos1 + 1) + value.toString() + cur.substring(pos2);
       } else {
-        cur = 0.toString();
+        return _currentVal;
       }
     }
 
@@ -131,7 +133,7 @@ class _Calculator extends State<Calculator> {
       String num1 = '';
       int pos2 = -1;
       String num2 = '';
-      for (int j = loc; j >= 0; j--) {
+      for (int j = loc - 1; j >= 0; j--) {
         if (!_isNumeric(cur[j])) {
           pos1 = j;
           num1 = cur.substring(j + 1, loc);
@@ -139,13 +141,24 @@ class _Calculator extends State<Calculator> {
         }
       }
 
-      for (int j = loc; j < cur.length; j++) {
+      if (num1 == '') {
+        pos1 = -1;
+        num1 = cur.substring(0, loc);
+      }
+
+      for (int j = loc + 1; j < cur.length; j++) {
         if (!_isNumeric(cur[j])) {
           pos2 = j;
           num2 = cur.substring(loc + 1, j);
           break;
         }
       }
+
+      if (num2 == '') {
+        pos2 = cur.length;
+        num2 = cur.substring(loc + 1, pos2);
+      }
+
       double value = 0;
       if (_isNumeric(num1) && _isNumeric(num2)) {
         if (op == 0) {
@@ -155,10 +168,11 @@ class _Calculator extends State<Calculator> {
         }
         cur = cur.substring(0, pos1 + 1) + value.toString() + cur.substring(pos2);
       } else {
-        cur = 0.toString();
+        return _currentVal;
       }
     }
     print(cur);
+    _currentVal = cur;
     return cur;
   }
 
@@ -204,7 +218,8 @@ class _Calculator extends State<Calculator> {
               GridButtonItem(title: '+'),
             ],
             [
-              GridButtonItem(title: '='),
+              GridButtonItem(title: '('),
+              GridButtonItem(title: ')'),
             ],
           ],
               onPressed: (dynamic val) {
