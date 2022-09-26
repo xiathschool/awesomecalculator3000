@@ -1,5 +1,5 @@
 import 'dart:math';
-
+import 'dart:collection';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_grid_button/flutter_grid_button.dart';
@@ -33,7 +33,7 @@ class Calculator extends StatefulWidget {
 
 class _Calculator extends State<Calculator> {
   String _current = ""; // current operations + numbers thus far
-  String _currentVal = '0';
+  Stack _currentVal = Stack();
   final buttonStyle = const TextStyle(
     color: Colors.blueGrey,
   );
@@ -46,14 +46,14 @@ class _Calculator extends State<Calculator> {
         children: <Widget>[
           Flexible(
               child: Text(
-            textAlign: TextAlign.left,
-            total.toString(),
-          )),
+                textAlign: TextAlign.left,
+                total.toString(),
+              )),
           Flexible(
               child: Text(
-            textAlign: TextAlign.right,
-            _current,
-          ))
+                textAlign: TextAlign.right,
+                _current,
+              ))
         ]);
   }
 
@@ -67,7 +67,7 @@ class _Calculator extends State<Calculator> {
       int endParenth = cur.lastIndexOf(')');
       if (endParenth == -1) {
         print("AHHHHHHHHHHHHHHHHH incorrect syntax: no ending parenthesis");
-        return _currentVal;
+        return _currentVal.peek();
       }
       String value = calculate(cur.substring(parenth + 1, endParenth));
       cur = cur.substring(0, parenth) + value.toString() + cur.substring(endParenth + 1);
@@ -118,7 +118,7 @@ class _Calculator extends State<Calculator> {
         }
         cur = cur.substring(0, pos1 + 1) + value.toString() + cur.substring(pos2);
       } else {
-        return _currentVal;
+        return _currentVal.peek();
       }
     }
 
@@ -168,7 +168,7 @@ class _Calculator extends State<Calculator> {
         }
         cur = cur.substring(0, pos1 + 1) + value.toString() + cur.substring(pos2);
       } else {
-        return _currentVal;
+        return _currentVal.peek();
       }
     }
     if (_isNumeric(cur)) {
@@ -176,7 +176,7 @@ class _Calculator extends State<Calculator> {
       cur = double.parse(num.toStringAsFixed(8)).toString();
     }
     print(cur);
-    _currentVal = cur;
+    _currentVal.push(cur);
     return cur;
   }
 
@@ -192,46 +192,86 @@ class _Calculator extends State<Calculator> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-      Flexible(child: display()),
-      Flexible(
-          child: GridButton(
-              items: const [
-            [
-              GridButtonItem(title: '7'),
-              GridButtonItem(title: '8'),
-              GridButtonItem(title: '9'),
-              GridButtonItem(title: '/'),
-            ],
-            [
-              GridButtonItem(title: '4'),
-              GridButtonItem(title: '5'),
-              GridButtonItem(title: '6'),
-              GridButtonItem(title: '*'),
-            ],
-            [
-              GridButtonItem(title: '1'),
-              GridButtonItem(title: '2'),
-              GridButtonItem(title: '3'),
-              GridButtonItem(title: '-'),
-            ],
-            [
-              GridButtonItem(title: '0', flex: 2),
-              GridButtonItem(title: '.'),
-              GridButtonItem(title: '+'),
-            ],
-            [
-              GridButtonItem(title: '('),
-              GridButtonItem(title: ')'),
-            ],
-          ],
-              onPressed: (dynamic val) {
-                if (val != '=') {
-                  _current += val;
-                }
-                setState(() {});
-              }))
-    ]);
+          Flexible(child: display()),
+          Flexible(
+              child: GridButton(
+                  items: const [
+                    [
+                      GridButtonItem(title: 'Clear'),
+                      GridButtonItem(title: 'Backspace'),
+                    ],
+                    [
+                      GridButtonItem(title: '7'),
+                      GridButtonItem(title: '8'),
+                      GridButtonItem(title: '9'),
+                      GridButtonItem(title: '/'),
+                    ],
+                    [
+                      GridButtonItem(title: '4'),
+                      GridButtonItem(title: '5'),
+                      GridButtonItem(title: '6'),
+                      GridButtonItem(title: '*'),
+                    ],
+                    [
+                      GridButtonItem(title: '1'),
+                      GridButtonItem(title: '2'),
+                      GridButtonItem(title: '3'),
+                      GridButtonItem(title: '-'),
+                    ],
+                    [
+                      GridButtonItem(title: '0', flex: 2),
+                      GridButtonItem(title: '.'),
+                      GridButtonItem(title: '+'),
+                    ],
+                    [
+                      GridButtonItem(title: '('),
+                      GridButtonItem(title: ')'),
+                    ],
+                  ],
+                  onPressed: (dynamic val) {
+                    if (val == 'Clear') {
+                      _current = '';
+                      _currentVal.clearStack();
+                    } else if (val == 'Backspace') {
+                      if (_current.isNotEmpty) {
+                        _current = _current.substring(0, _current.length - 1);
+                        _currentVal.pop();
+                      }
+                    } else
+                    {
+                      _current += val;
+                    }
+                    setState(() {});
+                  }))
+        ]);
   }
+}
+
+class Stack<T> {
+  final _stack = Queue<T>();
+
+  int get length => _stack.length;
+
+  bool canPop() => _stack.isNotEmpty;
+
+  void clearStack(){
+    while(_stack.isNotEmpty){
+      _stack.removeLast();
+    }
+  }
+
+  void push(T element) {
+    _stack.addLast(element);
+  }
+
+  T pop() {
+    T lastElement = _stack.last;
+    _stack.removeLast();
+    return lastElement;
+  }
+
+  T peek() => _stack.last;
+
 }
