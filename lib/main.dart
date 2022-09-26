@@ -84,7 +84,7 @@ class _Calculator extends State<Calculator> {
       int pos2 = -1;
       String num2 = '';
       for (int j = loc - 1; j >= 0; j--) {
-        if (!_isNumeric(cur[j])) {
+        if (cur[j] != '.' && !_isNumeric(cur[j])) {
           pos1 = j;
           num1 = cur.substring(j + 1, loc);
           break;
@@ -97,7 +97,7 @@ class _Calculator extends State<Calculator> {
       }
 
       for (int j = loc + 1; j < cur.length; j++) {
-        if (!_isNumeric(cur[j])) {
+        if (cur[j] != '.' && !_isNumeric(cur[j])) {
           pos2 = j;
           num2 = cur.substring(loc + 1, j);
           break;
@@ -134,7 +134,7 @@ class _Calculator extends State<Calculator> {
       int pos2 = -1;
       String num2 = '';
       for (int j = loc - 1; j >= 0; j--) {
-        if (!_isNumeric(cur[j])) {
+        if (cur[j] != '.' && !_isNumeric(cur[j])) {
           pos1 = j;
           num1 = cur.substring(j + 1, loc);
           break;
@@ -147,7 +147,7 @@ class _Calculator extends State<Calculator> {
       }
 
       for (int j = loc + 1; j < cur.length; j++) {
-        if (!_isNumeric(cur[j])) {
+        if (cur[j] != '.' && !_isNumeric(cur[j])) {
           pos2 = j;
           num2 = cur.substring(loc + 1, j);
           break;
@@ -170,6 +170,10 @@ class _Calculator extends State<Calculator> {
       } else {
         return _currentVal;
       }
+    }
+    if (_isNumeric(cur)) {
+      double num = double.parse(cur);
+      cur = double.parse(num.toStringAsFixed(8)).toString();
     }
     print(cur);
     _currentVal = cur;
