@@ -31,16 +31,7 @@ class Calculator extends StatefulWidget {
   State<Calculator> createState() => _Calculator();
 }
 
-class CalculatorButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return const ElevatedButton(
-      onPressed: null,
-      child: Text('test test'),
-    );
-  }
-  
-}
+
 
 class _Calculator extends State<Calculator> {
   String _current = ""; // current operations + numbers thus far
@@ -57,13 +48,22 @@ class _Calculator extends State<Calculator> {
         children: <Widget>[
           Flexible(
               child: Text(
+
                 textAlign: TextAlign.left,
                 total.toString(),
+                style: TextStyle(
+                  decoration: TextDecoration.none,
+                  color: Colors.lightBlueAccent
+                )
               )),
           Flexible(
               child: Text(
                 textAlign: TextAlign.right,
                 _current,
+                style: TextStyle(
+                  decoration: TextDecoration.none,
+                  color: Colors.lightBlueAccent
+                )
               ))
         ]);
   }
@@ -222,7 +222,7 @@ class _Calculator extends State<Calculator> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Flexible(child: display()),
-          CalculatorButton(),
+          structures.CalculatorButton(),
           Flexible(
               child: GridButton(
                   items: const [
