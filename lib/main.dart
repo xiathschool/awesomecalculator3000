@@ -78,20 +78,6 @@ class _Calculator extends State<Calculator> {
       return _currentVal.peek();
     }
 
-    /*while (true) {
-      int parenth = cur.indexOf('(');
-      if (parenth == -1) {
-        break;
-      }
-      int endParenth = cur.lastIndexOf(')');
-      if (endParenth == -1) {
-        print("AHHHHHHHHHHHHHHHHH incorrect syntax: no ending parenthesis");
-        return _currentVal.peek();
-      }
-      String value = calculate(cur.substring(parenth + 1, endParenth));
-      cur = cur.substring(0, parenth) + value.toString() + cur.substring(endParenth + 1);
-    }*/
-
     while (true) {
       if (max(cur.indexOf('*'), cur.indexOf('/')) == -1) {
         break;
@@ -190,6 +176,8 @@ class _Calculator extends State<Calculator> {
         return _currentVal.peek();
       }
     }
+
+
     if (_isNumeric(cur)) {
       double num = double.parse(cur);
       cur = double.parse(num.toStringAsFixed(8)).toString();
