@@ -127,7 +127,7 @@ class _Calculator extends State<Calculator> {
       }
     }
 
-
+    String prev = "HELP MEEEEEEEEEEEE";
     while (true) {
       if (max(cur.indexOf('+'), cur.indexOf('-')) == -1) {
         break;
@@ -149,6 +149,9 @@ class _Calculator extends State<Calculator> {
       if (num1 == '') {
         pos1 = -1;
         num1 = cur.substring(0, loc);
+        if (num1 == '') {
+          num1 = '0';
+        }
       }
 
       for (int j = loc + 1; j < cur.length; j++) {
@@ -174,6 +177,12 @@ class _Calculator extends State<Calculator> {
         cur = cur.substring(0, pos1 + 1) + value.toString() + cur.substring(pos2);
       } else {
         return _currentVal.peek();
+      }
+
+      if (cur == prev) {
+        break;
+      } else {
+        prev = cur;
       }
     }
 
