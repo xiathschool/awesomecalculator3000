@@ -34,9 +34,9 @@ class Calculator extends StatefulWidget {
 class _Calculator extends State<Calculator> {
   String _current = ""; // current operations + numbers thus far
   structures.Stack _currentVal = structures.Stack();
-  final buttonStyle = const TextStyle(
-    color: Colors.blueGrey,
-  );
+  List <Widget> history = <Widget>[];
+
+  final buttonStyle = const TextStyle(color: Colors.blueGrey,);
 
   Widget display() {
     // display the current total + current operations
@@ -55,6 +55,26 @@ class _Calculator extends State<Calculator> {
                 _current,
               ))
         ]);
+  }
+
+  void equals() {
+    history.add(
+      Container(
+        color: Colors.white,
+        child: Column(
+          children: [
+            Text(
+              textAlign: TextAlign.left,
+              _currentVal.peek().toString(),
+            ),
+            Text(
+                textAlign: TextAlign.right,
+                _current.toString(),
+            )
+          ],
+        ),
+      )
+    );
   }
 
   // recursive function that calculates mathematical string operations
@@ -211,6 +231,11 @@ class _Calculator extends State<Calculator> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Flexible(child: display()),
+          Flexible(child: ListView.builder(
+              itemBuilder: (context, i) {
+
+              })
+          ),
           Flexible(
               child: GridButton(
                   items: const [
@@ -244,6 +269,9 @@ class _Calculator extends State<Calculator> {
                     [
                       GridButtonItem(title: '('),
                       GridButtonItem(title: ')'),
+                    ],
+                    [
+                      GridButtonItem(title: '='),
                     ],
                   ],
                   onPressed: (dynamic val) {
