@@ -1,8 +1,8 @@
 import 'dart:math';
-import 'dart:collection';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_grid_button/flutter_grid_button.dart';
+import 'structures.dart' as structures;
 
 void main() {
   runApp(const MyApp());
@@ -33,7 +33,7 @@ class Calculator extends StatefulWidget {
 
 class _Calculator extends State<Calculator> {
   String _current = ""; // current operations + numbers thus far
-  Stack _currentVal = Stack();
+  structures.Stack _currentVal = structures.Stack();
   final buttonStyle = const TextStyle(
     color: Colors.blueGrey,
   );
@@ -59,18 +59,23 @@ class _Calculator extends State<Calculator> {
 
   // recursive function that calculates mathematical string operations
   String calculate(String cur) {
-    while (true) {
-      int parenth = cur.indexOf('(');
-      if (parenth == -1) {
-        break;
+    structures.Stack par = structures.Stack();
+
+    for (int i = 0; i < cur.length; i++) {
+      if (cur[i] == '(') {
+        par.push(i);
       }
-      int endParenth = cur.lastIndexOf(')');
-      if (endParenth == -1) {
-        print("AHHHHHHHHHHHHHHHHH incorrect syntax: no ending parenthesis");
-        return _currentVal.peek();
+      if (cur[i] == ')' && par.canPop()) {
+        cur = cur.substring(0, par.peek()) + calculate(cur.substring(par.pop() + 1, i)) + cur.substring(i + 1);
+        i = -1;
+        par = structures.Stack();
+        continue;
       }
-      String value = calculate(cur.substring(parenth + 1, endParenth));
-      cur = cur.substring(0, parenth) + value.toString() + cur.substring(endParenth + 1);
+    }
+
+    if (par.canPop()) {
+      print('HELP MEEEEEEEEEEEEEEEEE');
+      return _currentVal.peek();
     }
 
     while (true) {
@@ -171,6 +176,8 @@ class _Calculator extends State<Calculator> {
         return _currentVal.peek();
       }
     }
+
+
     if (_isNumeric(cur)) {
       double num = double.parse(cur);
       cur = double.parse(num.toStringAsFixed(8)).toString();
@@ -247,31 +254,4 @@ class _Calculator extends State<Calculator> {
                   }))
         ]);
   }
-}
-
-class Stack<T> {
-  final _stack = Queue<T>();
-
-  int get length => _stack.length;
-
-  bool canPop() => _stack.isNotEmpty;
-
-  void clearStack(){
-    while(_stack.isNotEmpty){
-      _stack.removeLast();
-    }
-  }
-
-  void push(T element) {
-    _stack.addLast(element);
-  }
-
-  T pop() {
-    T lastElement = _stack.last;
-    _stack.removeLast();
-    return lastElement;
-  }
-
-  T peek() => _stack.last;
-
 }
