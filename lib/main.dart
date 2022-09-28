@@ -37,6 +37,10 @@ class _Calculator extends State<Calculator> {
   String _current = ""; // current operations + numbers thus far
   structures.Stack _currentVal = structures.Stack();
   List<Widget> history = <Widget>[];
+  TextStyle normal = const TextStyle(
+  decoration: TextDecoration.none,
+  color: Colors.lightBlueAccent
+  );
 
   final buttonStyle = const TextStyle(
     color: Colors.blueGrey,
@@ -53,19 +57,13 @@ class _Calculator extends State<Calculator> {
 
                 textAlign: TextAlign.left,
                 total.toString(),
-                style: TextStyle(
-                  decoration: TextDecoration.none,
-                  color: Colors.lightBlueAccent
-                )
+                style: normal,
               )),
           Flexible(
               child: Text(
                 textAlign: TextAlign.right,
                 _current,
-                style: TextStyle(
-                  decoration: TextDecoration.none,
-                  color: Colors.lightBlueAccent
-                )
+                style: normal
               ))
         ]);
   }
@@ -79,10 +77,12 @@ class _Calculator extends State<Calculator> {
           Text(
             textAlign: TextAlign.left,
             _currentVal.peek().toString(),
+            style: normal,
           ),
           Text(
             textAlign: TextAlign.right,
             _current.toString(),
+            style: normal,
           )
         ],
       ),
