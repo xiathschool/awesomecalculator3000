@@ -62,7 +62,8 @@ class _Calculator extends State<Calculator> {
   void equals() {
     history.add(Container(
       color: Colors.white,
-      child: Column(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             textAlign: TextAlign.left,
@@ -237,9 +238,10 @@ class _Calculator extends State<Calculator> {
         children: <Widget>[
           Expanded(
             child: ListView.builder(
+              reverse: true,
               itemCount: history.length,
               itemBuilder: (context, index) {
-                return history[index];
+                return history[history.length - 1 - index];
               },
             ),
           ),
