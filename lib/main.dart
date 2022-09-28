@@ -235,67 +235,73 @@ class _Calculator extends State<Calculator> {
     return Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          ListView.builder(
-            itemCount: history.length,
-            itemBuilder: (context, index) {
-              return history[index];
-            },
+          Expanded(
+            child: ListView.builder(
+              itemCount: history.length,
+              itemBuilder: (context, index) {
+                return history[index];
+              },
+            ),
           ),
-          Flexible(child: display()),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: display()
+          ),
           Flexible(
-              child: GridButton(
-                  items: const [
-                [
-                  GridButtonItem(title: 'Clear'),
-                  GridButtonItem(title: 'Backspace'),
+            child: GridButton(
+                items: const [
+                  [
+                    GridButtonItem(title: 'Clear'),
+                    GridButtonItem(title: 'Backspace'),
+                  ],
+                  [
+                    GridButtonItem(title: '7'),
+                    GridButtonItem(title: '8'),
+                    GridButtonItem(title: '9'),
+                    GridButtonItem(title: '/'),
+                  ],
+                  [
+                    GridButtonItem(title: '4'),
+                    GridButtonItem(title: '5'),
+                    GridButtonItem(title: '6'),
+                    GridButtonItem(title: '*'),
+                  ],
+                  [
+                    GridButtonItem(title: '1'),
+                    GridButtonItem(title: '2'),
+                    GridButtonItem(title: '3'),
+                    GridButtonItem(title: '-'),
+                  ],
+                  [
+                    GridButtonItem(title: '0', flex: 2),
+                    GridButtonItem(title: '.'),
+                    GridButtonItem(title: '+'),
+                  ],
+                  [
+                    GridButtonItem(title: '('),
+                    GridButtonItem(title: ')'),
+                  ],
+                  [
+                    GridButtonItem(title: '='),
+                  ],
                 ],
-                [
-                  GridButtonItem(title: '7'),
-                  GridButtonItem(title: '8'),
-                  GridButtonItem(title: '9'),
-                  GridButtonItem(title: '/'),
-                ],
-                [
-                  GridButtonItem(title: '4'),
-                  GridButtonItem(title: '5'),
-                  GridButtonItem(title: '6'),
-                  GridButtonItem(title: '*'),
-                ],
-                [
-                  GridButtonItem(title: '1'),
-                  GridButtonItem(title: '2'),
-                  GridButtonItem(title: '3'),
-                  GridButtonItem(title: '-'),
-                ],
-                [
-                  GridButtonItem(title: '0', flex: 2),
-                  GridButtonItem(title: '.'),
-                  GridButtonItem(title: '+'),
-                ],
-                [
-                  GridButtonItem(title: '('),
-                  GridButtonItem(title: ')'),
-                ],
-                [
-                  GridButtonItem(title: '='),
-                ],
-              ],
-                  onPressed: (dynamic val) {
-                    if (val == 'Clear') {
-                      _current = '';
-                      _currentVal.clearStack();
-                    } else if (val == 'Backspace') {
-                      if (_current.isNotEmpty) {
-                        _current = _current.substring(0, _current.length - 1);
-                        _currentVal.pop();
-                      }
-                    } else if (val == '=') {
-                      equals();
-                    } else {
-                      _current += val;
+                onPressed: (dynamic val) {
+                  if (val == 'Clear') {
+                    _current = '';
+                    _currentVal.clearStack();
+                  } else if (val == 'Backspace') {
+                    if (_current.isNotEmpty) {
+                      _current = _current.substring(0, _current.length - 1);
+                      _currentVal.pop();
                     }
-                    setState(() {});
-                  }))
+                  } else if (val == '=') {
+                    equals();
+                  } else {
+                    _current += val;
+                  }
+                  setState(() {});
+                }),
+          )
         ]);
   }
 }
