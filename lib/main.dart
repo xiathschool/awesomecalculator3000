@@ -34,9 +34,11 @@ class Calculator extends StatefulWidget {
 class _Calculator extends State<Calculator> {
   String _current = ""; // current operations + numbers thus far
   structures.Stack _currentVal = structures.Stack();
-  List <Widget> history = <Widget>[];
+  List<Widget> history = <Widget>[];
 
-  final buttonStyle = const TextStyle(color: Colors.blueGrey,);
+  final buttonStyle = const TextStyle(
+    color: Colors.blueGrey,
+  );
 
   Widget display() {
     // display the current total + current operations
@@ -46,35 +48,35 @@ class _Calculator extends State<Calculator> {
         children: <Widget>[
           Flexible(
               child: Text(
-                textAlign: TextAlign.left,
-                total.toString(),
-              )),
+            textAlign: TextAlign.left,
+            total.toString(),
+          )),
           Flexible(
               child: Text(
-                textAlign: TextAlign.right,
-                _current,
-              ))
+            textAlign: TextAlign.right,
+            _current,
+          ))
         ]);
   }
 
   void equals() {
-    history.add(
-      Container(
-        color: Colors.white,
-        child: Column(
-          children: [
-            Text(
-              textAlign: TextAlign.left,
-              _currentVal.peek().toString(),
-            ),
-            Text(
-                textAlign: TextAlign.right,
-                _current.toString(),
-            )
-          ],
-        ),
-      )
-    );
+    history.add(Container(
+      color: Colors.white,
+      child: Column(
+        children: [
+          Text(
+            textAlign: TextAlign.left,
+            _currentVal.peek().toString(),
+          ),
+          Text(
+            textAlign: TextAlign.right,
+            _current.toString(),
+          )
+        ],
+      ),
+    ));
+    _current = '';
+    _currentVal.clearStack();
   }
 
   // recursive function that calculates mathematical string operations
@@ -86,7 +88,9 @@ class _Calculator extends State<Calculator> {
         par.push(i);
       }
       if (cur[i] == ')' && par.canPop()) {
-        cur = cur.substring(0, par.peek()) + calculate(cur.substring(par.pop() + 1, i)) + cur.substring(i + 1);
+        cur = cur.substring(0, par.peek()) +
+            calculate(cur.substring(par.pop() + 1, i)) +
+            cur.substring(i + 1);
         i = -1;
         par = structures.Stack();
         continue;
@@ -102,7 +106,8 @@ class _Calculator extends State<Calculator> {
       if (max(cur.indexOf('*'), cur.indexOf('/')) == -1) {
         break;
       }
-      int loc = min(cur.contains('*') ? cur.indexOf('*') : 100000000, cur.contains('/') ? cur.indexOf('/') : 100000000);
+      int loc = min(cur.contains('*') ? cur.indexOf('*') : 100000000,
+          cur.contains('/') ? cur.indexOf('/') : 100000000);
       int op = cur[loc] == '*' ? 0 : 1;
       int pos1 = -1;
       String num1 = '';
@@ -141,7 +146,8 @@ class _Calculator extends State<Calculator> {
         } else {
           value = double.parse(num1) / double.parse(num2);
         }
-        cur = cur.substring(0, pos1 + 1) + value.toString() + cur.substring(pos2);
+        cur =
+            cur.substring(0, pos1 + 1) + value.toString() + cur.substring(pos2);
       } else {
         return _currentVal.peek();
       }
@@ -152,7 +158,8 @@ class _Calculator extends State<Calculator> {
       if (max(cur.indexOf('+'), cur.indexOf('-')) == -1) {
         break;
       }
-      int loc = min(cur.contains('+') ? cur.indexOf('+') : 100000000, cur.contains('-') ? cur.indexOf('-') : 100000000);
+      int loc = min(cur.contains('+') ? cur.indexOf('+') : 100000000,
+          cur.contains('-') ? cur.indexOf('-') : 100000000);
       int op = cur[loc] == '+' ? 0 : 1;
       int pos1 = -1;
       String num1 = '';
@@ -194,7 +201,8 @@ class _Calculator extends State<Calculator> {
         } else {
           value = double.parse(num1) - double.parse(num2);
         }
-        cur = cur.substring(0, pos1 + 1) + value.toString() + cur.substring(pos2);
+        cur =
+            cur.substring(0, pos1 + 1) + value.toString() + cur.substring(pos2);
       } else {
         return _currentVal.peek();
       }
@@ -206,7 +214,6 @@ class _Calculator extends State<Calculator> {
       }
     }
 
-
     if (_isNumeric(cur)) {
       double num = double.parse(cur);
       cur = double.parse(num.toStringAsFixed(8)).toString();
@@ -215,8 +222,6 @@ class _Calculator extends State<Calculator> {
     _currentVal.push(cur);
     return cur;
   }
-
-
 
   bool _isNumeric(String str) {
     if (str == null) {
@@ -230,50 +235,51 @@ class _Calculator extends State<Calculator> {
     return Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Flexible(child: display()),
-          Flexible(child: ListView.builder(
-              itemBuilder: (context, i) {
-
-              })
+          ListView.builder(
+            itemCount: history.length,
+            itemBuilder: (context, index) {
+              return history[index];
+            },
           ),
+          Flexible(child: display()),
           Flexible(
               child: GridButton(
                   items: const [
-                    [
-                      GridButtonItem(title: 'Clear'),
-                      GridButtonItem(title: 'Backspace'),
-                    ],
-                    [
-                      GridButtonItem(title: '7'),
-                      GridButtonItem(title: '8'),
-                      GridButtonItem(title: '9'),
-                      GridButtonItem(title: '/'),
-                    ],
-                    [
-                      GridButtonItem(title: '4'),
-                      GridButtonItem(title: '5'),
-                      GridButtonItem(title: '6'),
-                      GridButtonItem(title: '*'),
-                    ],
-                    [
-                      GridButtonItem(title: '1'),
-                      GridButtonItem(title: '2'),
-                      GridButtonItem(title: '3'),
-                      GridButtonItem(title: '-'),
-                    ],
-                    [
-                      GridButtonItem(title: '0', flex: 2),
-                      GridButtonItem(title: '.'),
-                      GridButtonItem(title: '+'),
-                    ],
-                    [
-                      GridButtonItem(title: '('),
-                      GridButtonItem(title: ')'),
-                    ],
-                    [
-                      GridButtonItem(title: '='),
-                    ],
-                  ],
+                [
+                  GridButtonItem(title: 'Clear'),
+                  GridButtonItem(title: 'Backspace'),
+                ],
+                [
+                  GridButtonItem(title: '7'),
+                  GridButtonItem(title: '8'),
+                  GridButtonItem(title: '9'),
+                  GridButtonItem(title: '/'),
+                ],
+                [
+                  GridButtonItem(title: '4'),
+                  GridButtonItem(title: '5'),
+                  GridButtonItem(title: '6'),
+                  GridButtonItem(title: '*'),
+                ],
+                [
+                  GridButtonItem(title: '1'),
+                  GridButtonItem(title: '2'),
+                  GridButtonItem(title: '3'),
+                  GridButtonItem(title: '-'),
+                ],
+                [
+                  GridButtonItem(title: '0', flex: 2),
+                  GridButtonItem(title: '.'),
+                  GridButtonItem(title: '+'),
+                ],
+                [
+                  GridButtonItem(title: '('),
+                  GridButtonItem(title: ')'),
+                ],
+                [
+                  GridButtonItem(title: '='),
+                ],
+              ],
                   onPressed: (dynamic val) {
                     if (val == 'Clear') {
                       _current = '';
@@ -283,8 +289,9 @@ class _Calculator extends State<Calculator> {
                         _current = _current.substring(0, _current.length - 1);
                         _currentVal.pop();
                       }
-                    } else
-                    {
+                    } else if (val == '=') {
+                      equals();
+                    } else {
                       _current += val;
                     }
                     setState(() {});
