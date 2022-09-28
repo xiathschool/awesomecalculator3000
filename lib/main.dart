@@ -31,6 +31,8 @@ class Calculator extends StatefulWidget {
   State<Calculator> createState() => _Calculator();
 }
 
+
+
 class _Calculator extends State<Calculator> {
   String _current = ""; // current operations + numbers thus far
   structures.Stack _currentVal = structures.Stack();
@@ -48,14 +50,23 @@ class _Calculator extends State<Calculator> {
         children: <Widget>[
           Flexible(
               child: Text(
-            textAlign: TextAlign.left,
-            total.toString(),
-          )),
+
+                textAlign: TextAlign.left,
+                total.toString(),
+                style: TextStyle(
+                  decoration: TextDecoration.none,
+                  color: Colors.lightBlueAccent
+                )
+              )),
           Flexible(
               child: Text(
-            textAlign: TextAlign.right,
-            _current,
-          ))
+                textAlign: TextAlign.right,
+                _current,
+                style: TextStyle(
+                  decoration: TextDecoration.none,
+                  color: Colors.lightBlueAccent
+                )
+              ))
         ]);
   }
 
