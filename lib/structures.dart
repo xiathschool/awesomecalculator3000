@@ -32,13 +32,42 @@ class Stack<T> {
 
 
 class CalculatorButton extends StatelessWidget {
+
+  CalculatorButton({
+    required this.label,
+    required this.onPress,
+    this.background = Colors.white,
+    this.foreground = Colors.blueGrey,
+    this.width = 100,
+    this.height = 100
+  });
+
+  final VoidCallback onPress;
+  final String label;
+  final Color? background;
+  final Color? foreground;
+  final double width;
+  final double height;
+
+
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        print('help me');
-      },
-      child: Text('test test'),
+    return Padding(
+      padding: EdgeInsets.all(8.0),
+      child: ElevatedButton(
+        onPressed: onPress,
+        style: ElevatedButton.styleFrom(
+          fixedSize: Size(this.width, this.height),
+          shape: StadiumBorder(),
+          backgroundColor: background,
+          foregroundColor: foreground,
+        ),
+        child: Text(
+            label,
+            style: TextStyle(fontSize: 28)
+        ),
+      ),
     );
   }
 }
+

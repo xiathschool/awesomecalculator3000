@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -39,7 +40,7 @@ class _Calculator extends State<Calculator> {
   List<Widget> history = <Widget>[];
   TextStyle normal = const TextStyle(
   decoration: TextDecoration.none,
-  color: Colors.lightBlueAccent
+  color: Colors.blue,
   );
 
   final buttonStyle = const TextStyle(
@@ -115,12 +116,12 @@ class _Calculator extends State<Calculator> {
     }
 
     while (true) {
-      if (max(cur.indexOf('*'), cur.indexOf('/')) == -1) {
+      if (max(cur.indexOf('×'), cur.indexOf('÷')) == -1) {
         break;
       }
-      int loc = min(cur.contains('*') ? cur.indexOf('*') : 100000000,
-          cur.contains('/') ? cur.indexOf('/') : 100000000);
-      int op = cur[loc] == '*' ? 0 : 1;
+      int loc = min(cur.contains('×') ? cur.indexOf('×') : 100000000,
+          cur.contains('÷') ? cur.indexOf('÷') : 100000000);
+      int op = cur[loc] == '×' ? 0 : 1;
       int pos1 = -1;
       String num1 = '';
       int pos2 = -1;
@@ -242,6 +243,24 @@ class _Calculator extends State<Calculator> {
     return double.tryParse(str) != null;
   }
 
+  valuePressed(dynamic val) {
+    if (val == 'Clear') {
+      _current = '';
+      _currentVal.clearStack();
+    } else if (val == 'Backspace') {
+      if (_current.isNotEmpty) {
+        _current = _current.substring(0, _current.length - 1);
+        _currentVal.pop();
+      }
+    } else if (val == '=') {
+      equals();
+    } else {
+      _current += val;
+    }
+    setState(() {});
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -260,6 +279,52 @@ class _Calculator extends State<Calculator> {
             alignment: Alignment.bottomCenter,
             child: display()
           ),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                structures.CalculatorButton(label: 'C', onPress: () => valuePressed('Clear'), background: Colors.amber.shade50, foreground: Colors.amber.shade700),
+                structures.CalculatorButton(label: '(', onPress: () => valuePressed('('), background: Colors.amber.shade50, foreground: Colors.amber.shade700),
+                structures.CalculatorButton(label: ')', onPress: () => valuePressed(')'), background: Colors.amber.shade50, foreground: Colors.amber.shade700),
+                structures.CalculatorButton(label: '÷', onPress: () => valuePressed('÷'), background: Colors.blue.shade50, foreground: Colors.blue),
+              ]
+          ),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                structures.CalculatorButton(label: '7', onPress: () => valuePressed('7')),
+                structures.CalculatorButton(label: '8', onPress: () => valuePressed('8')),
+                structures.CalculatorButton(label: '9', onPress: () => valuePressed('9')),
+                structures.CalculatorButton(label: '×', onPress: () => valuePressed('×'), background: Colors.blue.shade50, foreground: Colors.blue),
+              ]
+          ),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                structures.CalculatorButton(label: '4', onPress: () => valuePressed('4')),
+                structures.CalculatorButton(label: '5', onPress: () => valuePressed('5')),
+                structures.CalculatorButton(label: '6', onPress: () => valuePressed('6')),
+                structures.CalculatorButton(label: '—', onPress: () => valuePressed('-'), background: Colors.blue.shade50, foreground: Colors.blue),
+              ]
+          ),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                structures.CalculatorButton(label: '1', onPress: () => valuePressed('1')),
+                structures.CalculatorButton(label: '2', onPress: () => valuePressed('2')),
+                structures.CalculatorButton(label: '3', onPress: () => valuePressed('3')),
+                structures.CalculatorButton(label: '+', onPress: () => valuePressed('+'), background: Colors.blue.shade50, foreground: Colors.blue),
+              ]
+          ),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                structures.CalculatorButton(label: '.', onPress: () => valuePressed('.')),
+                structures.CalculatorButton(label: '0', onPress: () => valuePressed('0')),
+                structures.CalculatorButton(label: '<-', onPress: () => valuePressed('Backspace'), background: Colors.grey.shade100),
+                structures.CalculatorButton(label: '=', onPress: () => valuePressed('='), background: Colors.blue.shade300, foreground: Colors.white),
+              ]
+          ),
+          /*
           Flexible(
             child: GridButton(
                 items: const [
@@ -314,7 +379,8 @@ class _Calculator extends State<Calculator> {
                   }
                   setState(() {});
                 }),
-          )
+          )*/
         ]);
   }
 }
+
