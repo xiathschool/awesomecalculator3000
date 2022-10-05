@@ -38,8 +38,9 @@ class CalculatorButton extends StatelessWidget {
     required this.onPress,
     this.background = Colors.white,
     this.foreground = Colors.blueGrey,
-    this.width = 100,
+    this.width = 200,
     this.height = 100
+
   });
 
   final VoidCallback onPress;
@@ -52,21 +53,23 @@ class CalculatorButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(8.0),
-      child: ElevatedButton(
-        onPressed: onPress,
-        style: ElevatedButton.styleFrom(
-          fixedSize: Size(this.width, this.height),
-          shape: StadiumBorder(),
-          backgroundColor: background,
-          foregroundColor: foreground,
+    return Expanded(
+      child: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: ElevatedButton(
+          onPressed: onPress,
+          style: ElevatedButton.styleFrom(
+            minimumSize: Size(this.width, this.height),
+            shape: StadiumBorder(),
+            backgroundColor: background,
+            foregroundColor: foreground,
+          ),
+          child: Text(
+              label,
+              style: TextStyle(fontSize: 28)
+          ),
         ),
-        child: Text(
-            label,
-            style: TextStyle(fontSize: 28)
-        ),
-      ),
+      )
     );
   }
 }

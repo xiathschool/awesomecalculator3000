@@ -41,6 +41,8 @@ class _Calculator extends State<Calculator> {
   TextStyle normal = const TextStyle(
   decoration: TextDecoration.none,
   color: Colors.blue,
+    fontSize: 48,
+    fontWeight: FontWeight.bold
   );
 
   final buttonStyle = const TextStyle(
@@ -70,23 +72,36 @@ class _Calculator extends State<Calculator> {
   }
 
   void equals() {
-    history.add(Container(
+    history.add(Card(
       color: Colors.white,
-      child: Row(
+      child: InkWell(
+        splashColor: Colors.blue.withAlpha(30),
+        onTap: () {
+          debugPrint('Card tapped.');
+        },
+        child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            textAlign: TextAlign.left,
-            _currentVal.peek().toString(),
-            style: normal,
+          SizedBox(
+              height: 100,
+              child: Text(
+                textAlign: TextAlign.right,
+                _current.toString(),
+                style: normal,
+              )
           ),
-          Text(
-            textAlign: TextAlign.right,
-            _current.toString(),
-            style: normal,
-          )
+          SizedBox(
+            height: 100,
+            child: Text(
+              textAlign: TextAlign.left,
+              _currentVal.peek().toString(),
+              style: normal,
+          ),
+          ),
         ],
       ),
+      )
+
     ));
     _current = '';
     _currentVal.clearStack();
