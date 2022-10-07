@@ -79,27 +79,22 @@ class _Calculator extends State<Calculator> {
         onTap: () {
           debugPrint('Card tapped.');
         },
-        child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          SizedBox(
-              height: 100,
-              child: Text(
-                textAlign: TextAlign.right,
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
                 _current.toString(),
                 style: normal,
+              ),
+              Text(
+                _currentVal.peek().toString(),
+                style: normal,
               )
+            ],
           ),
-          SizedBox(
-            height: 100,
-            child: Text(
-              textAlign: TextAlign.left,
-              _currentVal.peek().toString(),
-              style: normal,
-          ),
-          ),
-        ],
-      ),
+        )
       )
 
     ));
