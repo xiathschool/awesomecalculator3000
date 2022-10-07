@@ -52,23 +52,27 @@ class _Calculator extends State<Calculator> {
   Widget display() {
     // display the current total + current operations
     String total = calculate(_current);
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Flexible(
-              child: Text(
-
-                textAlign: TextAlign.left,
-                total.toString(),
-                style: normal,
-              )),
-          Flexible(
-              child: Text(
-                textAlign: TextAlign.right,
-                _current,
-                style: normal
-              ))
-        ]);
+    return Card(
+      child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Flexible(
+                child: Text(
+                  textAlign: TextAlign.left,
+                  total.toString(),
+                  style: normal,
+                )),
+            Flexible(
+                child: Text(
+                    textAlign: TextAlign.right,
+                    _current,
+                    style: normal
+                ))
+          ])
+      )
+    );
   }
 
   void equals() {
@@ -77,7 +81,7 @@ class _Calculator extends State<Calculator> {
       child: InkWell(
         splashColor: Colors.blue.withAlpha(30),
         onTap: () {
-          debugPrint('Card tapped.');
+
         },
         child: Padding(
           padding: EdgeInsets.all(16.0),
@@ -85,13 +89,13 @@ class _Calculator extends State<Calculator> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                _current.toString(),
+                _currentVal.peek().toString(),
                 style: normal,
               ),
               Text(
-                _currentVal.peek().toString(),
+                _current.toString(),
                 style: normal,
-              )
+              ),
             ],
           ),
         )
